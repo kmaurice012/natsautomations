@@ -18,7 +18,7 @@ export default function Footer() {
       { label: 'Portfolio', href: '#portfolio' },
       { label: 'Testimonials', href: '#testimonials' },
       { label: 'Contact', href: '#contact' },
-      { label: 'CRM Login', href: '/crm' },
+      { label: 'CRM Login', href: '/crm/login' },
     ],
     support: [
       { label: '24/7 Support', href: 'tel:+254726259977' },
