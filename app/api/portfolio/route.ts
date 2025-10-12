@@ -35,17 +35,14 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      console.error('Portfolio creation: No session found');
-      return NextResponse.json({ error: 'Unauthorized - Please log in' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
-    console.log('Portfolio creation body:', body);
     const { title, category, description, image, featured, order } = body;
 
     // Validation
     if (!title || !category || !description || !image) {
-      console.error('Portfolio creation: Missing fields', { title, category, description, image });
       return NextResponse.json(
         { error: 'Missing required fields: title, category, description, image' },
         { status: 400 }
@@ -63,15 +60,12 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log('Portfolio created successfully:', portfolio.id);
     return NextResponse.json({ portfolio }, { status: 201 });
   } catch (error: any) {
-    console.error('Portfolio creation error:', error);
-    console.error('Error stack:', error.stack);
-    console.error('Error message:', error.message);
+    console.error('Portfolio creation error:', error.message);
     return NextResponse.json({
       error: 'Failed to create portfolio item',
-      details: error.message
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 500 });
   }
 }

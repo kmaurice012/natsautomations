@@ -25,6 +25,10 @@ export const metadata: Metadata = {
   description: 'Professional CCTV, Electric Fencing, Solar Solutions, Automatic Gates, and Smart Home Automation in Nairobi, Kenya. 24/7 Support & Installation.',
   keywords: 'CCTV Kenya, Electric Fencing Nairobi, Solar Solutions, Automatic Gates, Smart Home Kenya, Security Systems',
   authors: [{ name: 'Nats Automations' }],
+  icons: {
+    icon: '/images/nats-logo.png',
+    apple: '/images/favicons/favicons/apple-touch-icon.png',
+  },
   openGraph: {
     title: 'Nats Electric & Automations',
     description: 'Professional Smart Home & Security Solutions in Kenya',
@@ -32,6 +36,14 @@ export const metadata: Metadata = {
     siteName: 'Nats Automations',
     locale: 'en_KE',
     type: 'website',
+    images: [
+      {
+        url: '/images/nats-logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Nats Automations - Smart Home & Security Solutions',
+      },
+    ],
   },
 };
 

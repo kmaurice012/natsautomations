@@ -110,9 +110,22 @@ export default function Portfolio() {
             >
               <div className="card overflow-hidden p-0">
                 <div className="relative h-64 bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-50">
-                    📸
-                  </div>
+                  {project.image ? (
+                    <>
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        onError={(e) => e.currentTarget.style.display = 'none'}
+                      />
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-50">
+                      📸
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <span className="text-white text-lg font-semibold">View Details</span>
                   </div>

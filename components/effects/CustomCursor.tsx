@@ -40,14 +40,14 @@ export default function CustomCursor() {
 
   const variants = {
     default: {
-      x: mousePosition.x - 16,
-      y: mousePosition.y - 16,
+      x: mousePosition.x - 20,
+      y: mousePosition.y - 20,
       scale: 1,
     },
     hover: {
-      x: mousePosition.x - 32,
-      y: mousePosition.y - 32,
-      scale: 2,
+      x: mousePosition.x - 40,
+      y: mousePosition.y - 40,
+      scale: 2.5,
     },
   };
 
@@ -55,9 +55,9 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Main cursor */}
+      {/* Main cursor with enhanced visibility */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9999]"
         variants={variants}
         animate={cursorVariant}
         transition={{
@@ -67,21 +67,45 @@ export default function CustomCursor() {
           mass: 0.5,
         }}
       >
-        <div className="w-full h-full rounded-full border-2 border-white" />
+        {/* Outer glow ring */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-400 to-secondary-400 opacity-30 blur-md animate-pulse" />
+
+        {/* Main cursor ring */}
+        <div className="w-full h-full rounded-full border-3 border-white mix-blend-difference shadow-[0_0_20px_rgba(255,255,255,0.8)]" />
       </motion.div>
 
-      {/* Cursor trail */}
+      {/* Enhanced cursor trail with glow */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 pointer-events-none z-[9999] bg-gradient-to-r from-primary-400 to-secondary-400 rounded-full"
+        className="fixed top-0 left-0 w-3 h-3 pointer-events-none z-[9999]"
         animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
+          x: mousePosition.x - 6,
+          y: mousePosition.y - 6,
         }}
         transition={{
           type: 'spring',
           stiffness: 150,
           damping: 15,
           mass: 0.1,
+        }}
+      >
+        {/* Glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-400 to-secondary-400 rounded-full blur-sm opacity-70" />
+        {/* Core */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full shadow-[0_0_15px_rgba(14,165,233,0.8)]" />
+      </motion.div>
+
+      {/* Additional trailing particles */}
+      <motion.div
+        className="fixed top-0 left-0 w-1.5 h-1.5 pointer-events-none z-[9999] bg-primary-400 rounded-full blur-[1px] opacity-60"
+        animate={{
+          x: mousePosition.x - 3,
+          y: mousePosition.y - 3,
+        }}
+        transition={{
+          type: 'spring',
+          stiffness: 100,
+          damping: 20,
+          mass: 0.2,
         }}
       />
     </>

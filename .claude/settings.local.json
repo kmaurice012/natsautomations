@@ -6,7 +6,9 @@
       "Bash(npm run build)",
       "WebSearch",
       "Bash(npx prisma migrate dev:*)",
-      "Bash(npx prisma generate:*)"
+      "Bash(npx prisma generate:*)",
+      "Bash(npx prisma:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -33,13 +34,24 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">N</span>
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="relative">
+                {/* Animated glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-xl blur-lg opacity-40 animate-pulse" />
+
+                {/* Logo container */}
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-br from-amber-50 via-white to-primary-50 border-2 border-primary-600/40 shadow-[0_0_20px_rgba(14,165,233,0.3)]">
+                  <Image
+                    src="/images/nats-logo.png"
+                    alt="Nats Automations Logo"
+                    fill
+                    className="object-contain p-1.5"
+                  />
+                </div>
               </div>
               <div>
-                <h3 className="text-xl font-bold">Nats Automations</h3>
-                <p className="text-sm text-gray-400">Smart Solutions</p>
+                <h3 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Nats Automations</h3>
+                <p className="text-sm text-primary-400 font-semibold">Smart Solutions</p>
               </div>
             </div>
             <p className="text-gray-400 mb-4">

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,10 +41,22 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-              <div className="relative w-12 h-12 bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <span className="text-white font-black text-2xl">N</span>
+              {/* Animated Glow Ring */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-400 via-secondary-400 to-primary-500 rounded-xl blur-xl opacity-40 group-hover:opacity-70 transition-all duration-500 animate-pulse" />
+
+              {/* Logo Container with Enhanced Styling */}
+              <div className="relative w-14 h-14 rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(14,165,233,0.3)] group-hover:shadow-[0_12px_48px_0_rgba(168,85,247,0.5)] group-hover:scale-110 transition-all duration-300 bg-gradient-to-br from-amber-50 via-white to-primary-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 border-2 border-primary-200/40 dark:border-primary-700/40 group-hover:border-secondary-400/60 dark:group-hover:border-secondary-500/60">
+                <Image
+                  src="/images/nats-logo.png"
+                  alt="Nats Automations Logo"
+                  fill
+                  className="object-contain p-1.5 drop-shadow-md"
+                  priority
+                />
               </div>
+
+              {/* Shine Effect on Hover */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-full transition-all duration-700 ease-out pointer-events-none" />
             </div>
             <div>
               <h1 className="text-xl font-black text-gray-900 dark:text-white group-hover:bg-gradient-to-r group-hover:from-primary-500 group-hover:to-secondary-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
