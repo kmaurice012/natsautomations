@@ -1,0 +1,353 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+  }
+
+  body.dark {
+    @apply bg-gray-900 text-white;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-600 hover:from-secondary-500 hover:via-primary-500 hover:to-secondary-600 text-white font-bold py-4 px-10 rounded-xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] active:scale-95;
+    background-size: 200% 200%;
+    animation: gradient-shift 4s ease infinite;
+    box-shadow: 0 15px 40px -5px rgba(14,165,233,0.4),
+                0 0 20px rgba(14,165,233,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 25px 70px -5px rgba(168,85,247,0.6),
+                0 0 40px rgba(168,85,247,0.5),
+                0 0 80px rgba(14,165,233,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    transition: left 0.6s;
+  }
+
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(168,85,247,0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-primary:hover::after {
+    opacity: 1;
+  }
+
+  .btn-secondary {
+    @apply relative overflow-hidden bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 active:scale-95;
+  }
+
+  .btn-outline {
+    @apply relative border-2 border-primary-400/60 dark:border-primary-400/40 text-primary-600 dark:text-primary-300 hover:text-white font-bold py-4 px-10 rounded-xl transition-all duration-500 hover:shadow-[0_20px_60px_-5px_rgba(14,165,233,0.5)] hover:scale-[1.02] active:scale-95 overflow-hidden backdrop-blur-md bg-white/60 dark:bg-gray-900/40;
+  }
+
+  .btn-outline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0ea5e9 0%, #a855f7 50%, #0ea5e9 100%);
+    transition: left 0.5s ease;
+    z-index: -1;
+  }
+
+  .btn-outline:hover::before {
+    left: 0;
+  }
+
+  .btn-outline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(14,165,233,0.2));
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+  }
+
+  .btn-outline:hover::after {
+    opacity: 1;
+  }
+
+  .section-heading {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4;
+  }
+
+  .section-subheading {
+    @apply text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8;
+  }
+
+  .card {
+    @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(14,165,233,0.12)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-8 transition-all duration-500 hover:shadow-[0_25px_70px_0_rgba(168,85,247,0.25)] dark:hover:shadow-[0_25px_70px_0_rgba(168,85,247,0.4)] hover:-translate-y-4 border border-primary-200/40 dark:border-primary-700/30 hover:border-secondary-300/60 dark:hover:border-secondary-500/50 relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(14,165,233,0.4), rgba(168,85,247,0.4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card-interactive {
+    @apply card cursor-pointer relative overflow-hidden;
+  }
+
+  .card-interactive::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,85,247,0.2), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+
+  .card-interactive:hover::after {
+    opacity: 1;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent;
+  }
+
+  /* NEON GLOW EFFECTS */
+  .neon-border {
+    @apply relative;
+    /* Light mode: Soft elegant shadow */
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.2),
+                0 8px 32px rgba(168, 85, 247, 0.15);
+  }
+
+  /* Dark mode: Intense neon glow */
+  body.dark .neon-border {
+    box-shadow: 0 0 5px rgba(14, 165, 233, 0.5),
+                0 0 10px rgba(14, 165, 233, 0.4),
+                0 0 20px rgba(14, 165, 233, 0.3),
+                0 0 40px rgba(168, 85, 247, 0.2);
+  }
+
+  .neon-text {
+    /* Light mode: Subtle shadow for depth */
+    text-shadow: 0 2px 8px rgba(14, 165, 233, 0.3),
+                 0 4px 16px rgba(168, 85, 247, 0.2);
+  }
+
+  /* Dark mode: Intense neon glow */
+  body.dark .neon-text {
+    text-shadow: 0 0 10px rgba(14, 165, 233, 0.8),
+                 0 0 20px rgba(14, 165, 233, 0.6),
+                 0 0 30px rgba(168, 85, 247, 0.4),
+                 0 0 40px rgba(168, 85, 247, 0.2);
+  }
+
+  .neon-glow {
+    /* Light mode: Gentle pulsing shadow */
+    animation: soft-pulse 2s ease-in-out infinite;
+  }
+
+  body.dark .neon-glow {
+    /* Dark mode: Intense neon pulse */
+    animation: neon-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes soft-pulse {
+    0%, 100% {
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.2),
+                  0 8px 32px rgba(168, 85, 247, 0.15);
+    }
+    50% {
+      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.3),
+                  0 16px 48px rgba(168, 85, 247, 0.25);
+    }
+  }
+
+  @keyframes neon-pulse {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(14, 165, 233, 0.5),
+                  0 0 10px rgba(14, 165, 233, 0.4),
+                  0 0 20px rgba(14, 165, 233, 0.3),
+                  0 0 40px rgba(168, 85, 247, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 10px rgba(14, 165, 233, 0.8),
+                  0 0 20px rgba(14, 165, 233, 0.6),
+                  0 0 40px rgba(168, 85, 247, 0.4),
+                  0 0 80px rgba(168, 85, 247, 0.3);
+    }
+  }
+
+  /* HOLOGRAPHIC EFFECT */
+  .holographic {
+    position: relative;
+    background: linear-gradient(135deg,
+      rgba(14, 165, 233, 0.1) 0%,
+      rgba(168, 85, 247, 0.1) 25%,
+      rgba(249, 115, 22, 0.1) 50%,
+      rgba(168, 85, 247, 0.1) 75%,
+      rgba(14, 165, 233, 0.1) 100%);
+    background-size: 400% 400%;
+    animation: holographic-shift 8s ease infinite;
+  }
+
+  @keyframes holographic-shift {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 50% 25%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 75%; }
+  }
+
+  .holographic::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.1) 75%,
+      transparent 100%);
+    background-size: 200% 200%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* 3D TILT CARD */
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+
+  .tilt-card:hover {
+    transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(1.02, 1.02, 1.02);
+  }
+
+  /* AURORA GRADIENT */
+  .aurora {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg,
+      rgba(14, 165, 233, 0.3) 0%,
+      rgba(168, 85, 247, 0.3) 25%,
+      rgba(249, 115, 22, 0.2) 50%,
+      rgba(168, 85, 247, 0.3) 75%,
+      rgba(14, 165, 233, 0.3) 100%);
+    background-size: 200% 200%;
+    animation: aurora-flow 15s ease infinite;
+    filter: blur(60px);
+    opacity: 0.6;
+  }
+
+  @keyframes aurora-flow {
+    0%, 100% {
+      background-position: 0% 50%;
+      transform: translate(-25%, -25%) rotate(0deg);
+    }
+    25% {
+      background-position: 50% 0%;
+      transform: translate(-30%, -20%) rotate(90deg);
+    }
+    50% {
+      background-position: 100% 50%;
+      transform: translate(-25%, -25%) rotate(180deg);
+    }
+    75% {
+      background-position: 50% 100%;
+      transform: translate(-20%, -30%) rotate(270deg);
+    }
+  }
+
+  /* MESH GRADIENT */
+  .mesh-gradient {
+    background:
+      radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.3) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.3) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(249, 115, 22, 0.2) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(168, 85, 247, 0.3) 0px, transparent 50%);
+    animation: mesh-shift 10s ease infinite;
+  }
+
+  @keyframes mesh-shift {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(30deg); }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Custom Cursor */
+  .cursor-none {
+    cursor: none;
+  }
+}

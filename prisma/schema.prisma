@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin") // admin, manager, agent
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  leads     Lead[]
+  activities Activity[]
+
+  @@map("users")
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  service   String
+  message   String?
+  status    String   @default("new") // new, contacted, qualified, converted, lost
+  priority  String   @default("medium") // low, medium, high
+  source    String   @default("website") // website, referral, phone, etc.
+  assignedToId String?
+  assignedTo   User?   @relation(fields: [assignedToId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  activities Activity[]
+  notes      Note[]
+
+  @@map("leads")
+}
+
+model Activity {
+  id        String   @id @default(cuid())
+  type      String   // call, email, meeting, note
+  content   String
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@map("activities")
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  content   String
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notes")
+}
+
+model Portfolio {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   // cctv, solar, fence, gate, smart
+  description String
+  image       String   // Image URL or path
+  featured    Boolean  @default(false)
+  order       Int      @default(0) // For custom sorting
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("portfolio")
+}
