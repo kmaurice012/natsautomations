@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -41,9 +42,23 @@ export default function LoginPage() {
 
       <div className="max-w-md w-full relative z-10">
         <div className="text-center mb-8">
-          <div className="inline-block w-20 h-20 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center mb-4 shadow-xl animate-pulse">
-            <span className="text-white font-bold text-3xl">N</span>
+          {/* Logo */}
+          <div className="relative inline-block mb-6">
+            {/* Animated Glow Ring */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-400 via-secondary-400 to-primary-500 rounded-2xl blur-2xl opacity-40 animate-pulse scale-110" />
+
+            {/* Logo Container */}
+            <div className="relative w-24 h-24 mx-auto rounded-2xl overflow-hidden shadow-[0_10px_60px_0_rgba(14,165,233,0.4)] bg-gradient-to-br from-amber-50 via-white to-primary-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 border-4 border-primary-200/40 dark:border-primary-600/40">
+              <Image
+                src="/images/nats-logo.png"
+                alt="Nats Automations Logo"
+                fill
+                className="object-contain p-2 drop-shadow-lg"
+                priority
+              />
+            </div>
           </div>
+
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
             CRM Login
           </h1>
@@ -85,6 +100,7 @@ export default function LoginPage() {
                 type="password"
                 id="password"
                 required
+                autoComplete="current-password"
                 value={formData.password}
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })

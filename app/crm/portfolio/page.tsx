@@ -5,6 +5,9 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
+import { useToast } from '@/hooks/useToast';
+import { ToastContainer } from '@/components/ui/Toast';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 
 interface PortfolioItem {
   id: string;
@@ -20,6 +23,7 @@ interface PortfolioItem {
 export default function PortfolioManagement() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const toast = useToast();
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -36,6 +40,10 @@ export default function PortfolioManagement() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    itemId: string | null;
+  }>({ isOpen: false, itemId: null });
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -56,10 +64,12 @@ export default function PortfolioManagement() {
       if (response.ok) {
         const data = await response.json();
         setPortfolioItems(data.portfolio);
+      } else {
+        toast.error('Failed to fetch portfolio', 'Unable to load portfolio items');
       }
     } catch (error) {
       console.error('Failed to fetch portfolio:', error);
-      alert('Failed to fetch portfolio items');
+      toast.error('Connection Error', 'Failed to fetch portfolio items');
     } finally {
       setIsLoading(false);
     }
@@ -93,15 +103,16 @@ export default function PortfolioManagement() {
 
       if (response.ok) {
         const data = await response.json();
+        toast.success('Image Uploaded', 'Your image has been uploaded successfully');
         return data.url;
       } else {
         const error = await response.json();
-        alert(`Upload failed: ${error.error}`);
+        toast.error('Upload Failed', error.error || 'Failed to upload image');
         return null;
       }
     } catch (error: any) {
       console.error('File upload error:', error);
-      alert(`Upload failed: ${error.message}`);
+      toast.error('Upload Error', error.message || 'Failed to upload image');
       return null;
     } finally {
       setUploading(false);
@@ -125,7 +136,7 @@ export default function PortfolioManagement() {
 
       // Validate we have an image
       if (!imageUrl) {
-        alert('Please provide an image');
+        toast.warning('Missing Image', 'Please provide an image for the portfolio item');
         return;
       }
 
@@ -142,15 +153,23 @@ export default function PortfolioManagement() {
         fetchPortfolio();
         setShowModal(false);
         resetForm();
-        alert(editingItem ? 'Portfolio item updated!' : 'Portfolio item created!');
+        toast.success(
+          editingItem ? 'Portfolio Updated' : 'Portfolio Created',
+          editingItem
+            ? 'Portfolio item has been updated successfully'
+            : 'New portfolio item has been created successfully'
+        );
       } else {
         const error = await response.json();
         console.error('Server error:', error);
-        alert(`Error: ${error.error}${error.details ? '\nDetails: ' + error.details : ''}`);
+        toast.error(
+          'Save Failed',
+          error.details || error.error || 'Failed to save portfolio item'
+        );
       }
     } catch (error: any) {
       console.error('Failed to save portfolio item:', error);
-      alert(`Failed to save portfolio item: ${error.message}`);
+      toast.error('Error', error.message || 'Failed to save portfolio item');
     }
   };
 
@@ -171,8 +190,6 @@ export default function PortfolioManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this portfolio item?')) return;
-
     try {
       const response = await fetch(`/api/portfolio/${id}`, {
         method: 'DELETE',
@@ -180,14 +197,18 @@ export default function PortfolioManagement() {
 
       if (response.ok) {
         fetchPortfolio();
-        alert('Portfolio item deleted!');
+        toast.success('Portfolio Deleted', 'Portfolio item has been deleted successfully');
       } else {
-        alert('Failed to delete portfolio item');
+        toast.error('Delete Failed', 'Failed to delete portfolio item');
       }
     } catch (error) {
       console.error('Failed to delete portfolio item:', error);
-      alert('Failed to delete portfolio item');
+      toast.error('Error', 'Failed to delete portfolio item');
     }
+  };
+
+  const confirmDelete = (id: string) => {
+    setConfirmDialog({ isOpen: true, itemId: id });
   };
 
   const handleAddNew = () => {
@@ -352,7 +373,7 @@ export default function PortfolioManagement() {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => confirmDelete(item.id)}
                     className="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors"
                   >
                     Delete
@@ -635,6 +656,25 @@ export default function PortfolioManagement() {
           </div>
         </div>
       )}
+
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toast.toasts} onClose={toast.removeToast} />
+
+      {/* Confirm Delete Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        title="Delete Portfolio Item"
+        message="Are you sure you want to delete this portfolio item? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmVariant="danger"
+        onConfirm={() => {
+          if (confirmDialog.itemId) {
+            handleDelete(confirmDialog.itemId);
+          }
+        }}
+        onCancel={() => setConfirmDialog({ isOpen: false, itemId: null })}
+      />
     </>
   );
 }
